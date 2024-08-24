@@ -23,12 +23,7 @@ jq(function () {
   });
   // Add
   jq(".add").click(function () {
-    let hidden = jq(".hidden");
-    let clonedHidden = hidden.clone().addClass("show");
-    let tdElement = clonedHidden.find(".demo");
-    let tdCheckBox = clonedHidden.find("input");
-    let result = tdElement.text(jq(".textAdd").val());
-    tdCheckBox.appendTo(".tbody");
-    result.appendTo(".tbody");
+    let tableRow = jq(".table tr").eq(1).clone();
+    tableRow.appendTo(".tbody");
   });
 });
