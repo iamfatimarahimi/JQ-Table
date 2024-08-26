@@ -1,27 +1,42 @@
 const jq = $.noConflict();
 jq(function () {
-  let singleCheck = jq(".single-slc");
   let selectAll = jq(".slc-all");
-
-  selectAll.change(function () {
-    if (jq(this).prop("checked")) {
-      singleCheck.prop("checked", true);
+  // Function to update checkboxes based on Select All button
+  function updateCheckboxes() {
+    let singleCheck = jq(".single-slc");
+    singleCheck.prop("checked", selectAll.prop("checked"));
+    if (selectAll.prop("checked")) {
       jq(".slc-all-label").text("Remove All");
-    } else if (!jq(this).prop("checked")) {
-      singleCheck.prop("checked", false);
+    } else {
       jq(".slc-all-label").text("Select All");
     }
+  }
+
+  // Select All button functionality
+  selectAll.change(function () {
+    updateCheckboxes();
   });
-  singleCheck.change(function () {
-    if (!jq(this).prop("checked")) {
-      selectAll.prop("checked", false);
-    }
+  // Select All button
+  // selectAll.change(function () {
+  //   if (jq(this).prop("checked")) {
+  //     singleCheck.prop("checked", true);
+  //     jq(".slc-all-label").text("Remove All");
+  //   } else {
+  //     singleCheck.prop("checked", false);
+  //     jq(".slc-all-label").text("Select All");
+  //   }
+  // });
+  // single checkBoxes
+  jq(document).on("change", ".single-slc", function () {
     let totalCheckboxes = jq(".single-slc").length;
     let checkCount = jq(".single-slc:checked").length;
     selectAll.prop("checked", totalCheckboxes === checkCount);
     if (checkCount === 0) jq(".slc-all-label").text("Select All");
+    else if (checkCount === totalCheckboxes)
+      jq(".slc-all-label").text("Remove All");
   });
-  // Add
+
+  // Adding the new row
   jq(".add").click(function () {
     let textInput = jq(".textAdd").val();
     let tableRow = jq(".table tr").eq(1).clone();
@@ -41,6 +56,9 @@ jq(function () {
     // Second Way
     const tableRowLength = jq(".table tr").length;
     tableRow.find(".number").text(tableRowLength);
-    tableRow.appendTo(".tbody");
+    tableRow.appendTo(".table");
+    // if (selectAll.prop("checked")) {
+    //   tableRow.find("input").prop("checked", true);
+    // }
   });
 });
